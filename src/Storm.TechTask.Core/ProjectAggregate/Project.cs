@@ -10,6 +10,7 @@ using Storm.TechTask.Core.ProjectAggregate.Services;
 using Storm.TechTask.SharedKernel.Entities;
 using Storm.TechTask.SharedKernel.Interfaces;
 using Storm.TechTask.SharedKernel.Utilities;
+using Storm.TechTask.Core.ProjectAggregate.Events;
 
 namespace Storm.TechTask.Core.ProjectAggregate
 {
@@ -53,14 +54,14 @@ namespace Storm.TechTask.Core.ProjectAggregate
             this.InternalOnly = newInternalOnly;
         }
 
-        
+
         public ToDoItem AddItem(string title, string description)
         {
             var item = new ToDoItem(title, description, false);
             this.Items.Add(item);
 
-            //var newItemAddedEvent = new NewItemAddedEvent(this, item);
-            //Events.Add(newItemAddedEvent);
+            var newItemAddedEvent = new NewItemAddedEvent(this, item);
+            Events.Add(newItemAddedEvent);
 
             return item;
         }
@@ -69,11 +70,14 @@ namespace Storm.TechTask.Core.ProjectAggregate
         {
             var item = Items.GetChildEntity(itemId);
 
+            var itemCompletedEvent = new ItemCompletedEvent(this, item);
+            Events.Add(itemCompletedEvent);
+
             item.MarkComplete();
 
             return item;
         }
-        
+
 
         public void Pause()
         {
