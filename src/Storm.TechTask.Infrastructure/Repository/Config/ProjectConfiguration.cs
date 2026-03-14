@@ -18,6 +18,7 @@ namespace Storm.TechTask.Infrastructure.Repository.Config
             builder.Property(p => p.Name)
                 .HasMaxLength(100)
                 .IsRequired();
+            builder.HasMany(p => p.Items);
         }
     }
 }

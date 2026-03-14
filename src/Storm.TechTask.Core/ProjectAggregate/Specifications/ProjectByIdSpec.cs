@@ -8,6 +8,7 @@ namespace Storm.TechTask.Core.ProjectAggregate.Specifications
         public ProjectByIdSpec(int projectId)
         {
             this.Query.Where(project => project.Id == projectId);
+            this.Query.Include(project => project.Items);
         }
     }
 }
